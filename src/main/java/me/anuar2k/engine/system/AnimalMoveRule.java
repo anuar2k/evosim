@@ -13,12 +13,12 @@ import me.anuar2k.engine.worldmap.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimalMoveSystem implements System {
+public class AnimalMoveRule implements Rule {
     private final WorldMap worldMap;
     private final RandSource randSource;
     private final double moveEnergy;
 
-    public AnimalMoveSystem(WorldMap worldMap, RandSource randSource, double moveEnergy) {
+    public AnimalMoveRule(WorldMap worldMap, RandSource randSource, double moveEnergy) {
         this.worldMap = worldMap;
         this.randSource = randSource;
         this.moveEnergy = moveEnergy;

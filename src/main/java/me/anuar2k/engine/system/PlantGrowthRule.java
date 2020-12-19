@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlantGrowthSystem implements System {
+public class PlantGrowthRule implements Rule {
     private final WorldMap worldMap;
     private final RandSource randSource;
     private final double plantEnergy;
@@ -19,7 +19,7 @@ public class PlantGrowthSystem implements System {
     private final List<Coord2D> jungleCells = new ArrayList<>();
     private final List<Coord2D> nonJungleCells = new ArrayList<>();
 
-    public PlantGrowthSystem(WorldMap worldMap, RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
+    public PlantGrowthRule(WorldMap worldMap, RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
         this.worldMap = worldMap;
         this.randSource = randSource;
         this.plantEnergy = plantEnergy;
@@ -72,7 +72,7 @@ public class PlantGrowthSystem implements System {
     }
 
     private List<Coord2D> getCellsWithoutPlants(WorldMap worldMap, List<Coord2D> cells) {
-        return cells.stream().filter(cell -> worldMap.getEntities(cell, PlantProperty.class).findFirst().isEmpty())
+        return cells.stream().filter(cell -> worldMap.getEntities(cell, PlantProperty.class).findAny().isEmpty())
                 .collect(Collectors.toList());
     }
 }

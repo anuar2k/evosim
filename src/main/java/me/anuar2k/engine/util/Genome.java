@@ -26,6 +26,17 @@ public class Genome {
         return new Genome(genes);
     }
 
+    public static Genome random(RandSource randSource) {
+        byte[] genes = new byte[Genome.GENOME_LENGTH];
+        for (int i = 0; i < Genome.GENOME_LENGTH; i++) {
+            genes[i] = (byte)Math.floorMod(randSource.next(), 8);
+        }
+
+        Genome.fixGenes(genes);
+
+        return new Genome(genes);
+    }
+
     public static Genome cross(RandSource randSource, Genome parent1, Genome parent2) {
         int div1 = Genome.chooseFromRange(0, Genome.GENOME_LENGTH - 2, randSource.next());
         int div2 = Genome.chooseFromRange(div1, Genome.GENOME_LENGTH - 1, randSource.next());
@@ -40,20 +51,24 @@ public class Genome {
             resultGenes[i] = parent2.getGenes()[i];
         }
 
-        Byte missingGene = getMissingGene(resultGenes);
-        int forcedGeneIndex = 0;
-
-        while (missingGene != null) {
-            resultGenes[forcedGeneIndex] = missingGene;
-            forcedGeneIndex++;
-            missingGene = getMissingGene(resultGenes);
-        }
+        Genome.fixGenes(resultGenes);
 
         return new Genome(resultGenes);
     }
 
     public byte[] getGenes() {
         return this.genes;
+    }
+
+    private static void fixGenes(byte[] genes) {
+        Byte missingGene = getMissingGene(genes);
+        int forcedGeneIndex = 0;
+
+        while (missingGene != null) {
+            genes[forcedGeneIndex] = missingGene;
+            forcedGeneIndex++;
+            missingGene = getMissingGene(genes);
+        }
     }
 
     private static Byte getMissingGene(byte[] genes) {

@@ -10,10 +10,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnimalFeedSystem implements System {
+public class AnimalFeedRule implements Rule {
     private final WorldMap worldMap;
 
-    public AnimalFeedSystem(WorldMap worldMap) {
+    public AnimalFeedRule(WorldMap worldMap) {
         this.worldMap = worldMap;
     }
 
@@ -29,7 +29,7 @@ public class AnimalFeedSystem implements System {
                 Coord2D currentCell = new Coord2D(x, y);
 
                 this.worldMap.getEntities(currentCell, PlantProperty.class)
-                    .findFirst()
+                    .findAny()
                     .ifPresent(plant -> this.worldMap.getEntities(currentCell, AnimalProperty.class)
                         .map(animal -> animal.getProperty(EnergyProperty.class).getEnergy())
                         .max(Comparator.naturalOrder())

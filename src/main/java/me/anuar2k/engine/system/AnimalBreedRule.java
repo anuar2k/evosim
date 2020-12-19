@@ -10,16 +10,15 @@ import me.anuar2k.engine.worldmap.WorldMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnimalBreedSystem implements System {
+public class AnimalBreedRule implements Rule {
     private final WorldMap worldMap;
     private final RandSource randSource;
     private final double minEnergy;
 
-    public AnimalBreedSystem(WorldMap worldMap, RandSource randSource, double minEnergy) {
+    public AnimalBreedRule(WorldMap worldMap, RandSource randSource, double minEnergy) {
         this.worldMap = worldMap;
         this.randSource = randSource;
         this.minEnergy = minEnergy;

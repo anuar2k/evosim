@@ -25,7 +25,7 @@ public class Entity {
     public void move(Coord2D to) {
         Coord2D from = this.position;
         this.position = to.wrapAround(this.worldMap);
-        this.worldMap.notifyEntityMoved(this, from, to);
+        this.worldMap.notifyEntityMoved(this, from, this.position);
     }
 
     public void addProperty(Property property) {

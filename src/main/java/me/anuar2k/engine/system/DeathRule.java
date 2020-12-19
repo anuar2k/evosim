@@ -6,10 +6,10 @@ import me.anuar2k.engine.worldmap.WorldMap;
 
 import java.util.stream.Collectors;
 
-public class DeathSystem implements System {
+public class DeathRule implements Rule {
     private final WorldMap worldMap;
 
-    public DeathSystem(WorldMap worldMap) {
+    public DeathRule(WorldMap worldMap) {
         this.worldMap = worldMap;
     }
 

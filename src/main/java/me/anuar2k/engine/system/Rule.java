@@ -1,6 +1,6 @@
 package me.anuar2k.engine.system;
 
-public interface System {
+public interface Rule {
     void init();
     void tick();
 }
