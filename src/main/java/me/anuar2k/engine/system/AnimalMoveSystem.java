@@ -6,6 +6,7 @@ import me.anuar2k.engine.property.DirectionProperty;
 import me.anuar2k.engine.property.EnergyProperty;
 import me.anuar2k.engine.property.GenomeProperty;
 import me.anuar2k.engine.util.Coord2D;
+import me.anuar2k.engine.util.Genome;
 import me.anuar2k.engine.util.RandSource;
 import me.anuar2k.engine.worldmap.WorldMap;
 
@@ -55,10 +56,10 @@ public class AnimalMoveSystem implements System {
     }
 
     private void rotateAnimal(Entity animal) {
-        GenomeProperty genome = animal.getProperty(GenomeProperty.class);
+        Genome genome = animal.getProperty(GenomeProperty.class).getGenome();
         DirectionProperty direction = animal.getProperty(DirectionProperty.class);
 
-        int rotation = genome.getGenes()[Math.floorMod(this.randSource.next(), GenomeProperty.GENOME_LENGTH)];
+        int rotation = genome.getGenes()[Math.floorMod(this.randSource.next(), Genome.GENOME_LENGTH)];
         direction.setDirection(direction.getDirection().rotate(rotation));
     }
 

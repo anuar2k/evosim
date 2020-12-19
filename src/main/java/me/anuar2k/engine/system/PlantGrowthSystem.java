@@ -42,7 +42,6 @@ public class PlantGrowthSystem implements System {
             for (int y = 0; y < this.worldMap.getWidth(); y++) {
                 Coord2D cell = new Coord2D(x, y);
 
-                //TODO: add sprite property
                 if (x >= jungleWidthStart && x < jungleWidthEnd && y >= jungleHeightStart && y < jungleHeightEnd) {
                     this.jungleCells.add(cell);
                 }

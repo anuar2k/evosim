@@ -69,7 +69,7 @@ public class Entity {
         }
     }
 
-    public void setPropertyWatcher(PropertyWatcher propertyWatcher) {
+    public void attachPropertyWatcher(PropertyWatcher propertyWatcher) {
         this.propertyWatcher = propertyWatcher;
     }
 
