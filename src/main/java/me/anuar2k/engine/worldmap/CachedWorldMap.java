@@ -7,6 +7,7 @@ import me.anuar2k.engine.property.PropertyWatcher;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Stream;
 
 //TODO: consider implementing caching entities with given properties
 public class CachedWorldMap implements WorldMap, PropertyWatcher {
@@ -16,17 +17,17 @@ public class CachedWorldMap implements WorldMap, PropertyWatcher {
     }
 
     @Override
-    public Collection<Entity> getEntities(Coord2D at) {
+    public Stream<Entity> getEntities(Coord2D at) {
         return null;
     }
 
     @Override
-    public Collection<Entity> getEntities(Coord2D at, Class<? extends Property> withProperty) {
+    public Stream<Entity> getEntities(Coord2D at, Class<? extends Property> withProperty) {
         return null;
     }
 
     @Override
-    public Collection<Entity> getEntities(Coord2D at, Set<Class<? extends Property>> withProperties) {
+    public Stream<Entity> getEntities(Coord2D at, Set<Class<? extends Property>> withProperties) {
         return null;
     }
 

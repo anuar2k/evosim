@@ -1,6 +1,7 @@
 package me.anuar2k.engine.simulation;
 
-import me.anuar2k.engine.rule.*;
+import me.anuar2k.engine.system.*;
+import me.anuar2k.engine.system.System;
 import me.anuar2k.engine.util.RandSource;
 import me.anuar2k.engine.worldmap.SimpleWorldMap;
 import me.anuar2k.engine.worldmap.WorldMap;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class DefaultSimulation implements Simulation {
     private final WorldMap worldMap;
-    private final List<Rule> rules;
+    private final List<System> systems;
 
     public DefaultSimulation(RandSource randSource,
                              int width,
@@ -17,19 +18,25 @@ public class DefaultSimulation implements Simulation {
                              double startEnergy,
                              double moveEnergy,
                              double plantEnergy,
-                             double jungleRatio) {
+                             int jungleWidth,
+                             int jungleHeight) {
         this.worldMap = new SimpleWorldMap(width, height);
-        this.rules = List.of(new DeathRule(),
-                             new AnimalMoveRule(randSource),
-                             new AnimalFeedRule(),
-                             new AnimalBreedRule(randSource, startEnergy / 2),
-                             new PlantGrowthRule(randSource, plantEnergy, jungleRatio));
+
+        this.systems = List.of(new AnimalMoveSystem(this.worldMap, randSource, moveEnergy),
+                               new DeathSystem(this.worldMap),
+                               new AnimalFeedSystem(this.worldMap),
+                               new AnimalBreedSystem(this.worldMap, randSource, startEnergy / 2),
+                               new PlantGrowthSystem(this.worldMap, randSource, plantEnergy, jungleWidth, jungleHeight));
+
+        for (System system : this.systems) {
+            system.init();
+        }
     }
 
     @Override
     public void tick() {
-        for (Rule rule : this.rules) {
-            rule.applyRule(this.worldMap);
+        for (System system : this.systems) {
+            system.tick();
         }
     }
 }

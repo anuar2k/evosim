@@ -6,6 +6,7 @@ import me.anuar2k.engine.property.Property;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SimpleWorldMap implements WorldMap {
     private final int width;
@@ -43,26 +44,24 @@ public class SimpleWorldMap implements WorldMap {
     }
 
     @Override
-    public Collection<Entity> getEntities(Coord2D at) {
-        return Collections.unmodifiableCollection(this.entities.get(at.wrapAround(this)));
+    public Stream<Entity> getEntities(Coord2D at) {
+        return this.entities.get(at.wrapAround(this)).stream();
     }
 
     @Override
-    public Collection<Entity> getEntities(Coord2D at, Class<? extends Property> withProperty) {
+    public Stream<Entity> getEntities(Coord2D at, Class<? extends Property> withProperty) {
         return this.entities.get(at.wrapAround(this))
                 .stream()
-                .filter(e -> e.hasProperty(withProperty))
-                .collect(Collectors.toUnmodifiableList());
+                .filter(e -> e.hasProperty(withProperty));
     }
 
     @Override
-    public Collection<Entity> getEntities(Coord2D at, Set<Class<? extends Property>> withProperties) {
+    public Stream<Entity> getEntities(Coord2D at, Set<Class<? extends Property>> withProperties) {
         return this.entities.get(at.wrapAround(this))
                 .stream()
                 .filter(e -> withProperties
                         .stream()
-                        .allMatch(p -> e.hasProperty(p)))
-                .collect(Collectors.toUnmodifiableList());
+                        .allMatch(p -> e.hasProperty(p)));
     }
 
     @Override

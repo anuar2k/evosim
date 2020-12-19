@@ -1,4 +1,4 @@
-package me.anuar2k.engine.rule;
+package me.anuar2k.engine.system;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.AnimalProperty;
@@ -12,27 +12,39 @@ import me.anuar2k.engine.worldmap.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimalMoveRule implements Rule {
+public class AnimalMoveSystem implements System {
+    private final WorldMap worldMap;
     private final RandSource randSource;
+    private final double moveEnergy;
 
-    public AnimalMoveRule(RandSource randSource) {
+    public AnimalMoveSystem(WorldMap worldMap, RandSource randSource, double moveEnergy) {
+        this.worldMap = worldMap;
         this.randSource = randSource;
+        this.moveEnergy = moveEnergy;
     }
 
     @Override
-    public void applyRule(WorldMap worldMap) {
+    public void init() {
+
+    }
+
+    @Override
+    public void tick() {
         List<Entity> toMove = new ArrayList<>();
 
-        for (int x = 0; x < worldMap.getWidth(); x++) {
-            for (int y = 0; y < worldMap.getHeight(); y++) {
-                for (Entity animal : worldMap.getEntities(new Coord2D(x, y), AnimalProperty.class)) {
+        for (int x = 0; x < this.worldMap.getWidth(); x++) {
+            for (int y = 0; y < this.worldMap.getHeight(); y++) {
+                this.worldMap.getEntities(new Coord2D(x, y), AnimalProperty.class).forEach(animal -> {
                     EnergyProperty energy = animal.getProperty(EnergyProperty.class);
-                    energy.setEnergy(energy.getEnergy() - 1);
+                    energy.adjustEnergy(-this.moveEnergy);
 
                     if (energy.getEnergy() > 0) {
                         toMove.add(animal);
                     }
-                }
+                    else {
+                        energy.setEnergy(0);
+                    }
+                });
             }
         }
 

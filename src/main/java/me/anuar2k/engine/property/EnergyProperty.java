@@ -14,4 +14,8 @@ public class EnergyProperty implements Property {
     public void setEnergy(double energy) {
         this.energy = energy;
     }
+
+    public void adjustEnergy(double delta) {
+        this.energy += delta;
+    }
 }

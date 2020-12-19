@@ -72,4 +72,8 @@ public class Entity {
     public void setPropertyWatcher(PropertyWatcher propertyWatcher) {
         this.propertyWatcher = propertyWatcher;
     }
+
+    public void detachPropertyWatcher() {
+        this.propertyWatcher = null;
+    }
 }
