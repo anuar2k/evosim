@@ -6,17 +6,9 @@ public final class Pair<Left, Right> {
     public final Left left;
     public final Right right;
 
-    //type erasure bullshit
-    //in Java you just can't do instanceof SomeType<Parameter1, Parameter2...>
-    //so you use getClass(). Of course, it renders our class useless for nulls
-    private final Class leftClass;
-    private final Class rightClass;
-
     public Pair(Left left, Right right) {
         this.left = left;
         this.right = right;
-        this.leftClass = left.getClass();
-        this.rightClass = right.getClass();
     }
 
     @Override
@@ -40,15 +32,11 @@ public final class Pair<Left, Right> {
 
         Pair other = (Pair)obj;
 
-        if (this.leftClass != other.leftClass || this.rightClass != other.rightClass) {
-            return false;
-        }
-
-        return this.left.equals(other.left) && this.right.equals(other.right);
+        return Objects.equals(this.left, other.left) && Objects.equals(this.right, other.right);
     }
 
     @Override
     public String toString() {
-        return "(" + this.left.toString() + ", " + this.right.toString() + ")";
+        return "(" + this.left + ", " + this.right + ")";
     }
 }

@@ -7,25 +7,39 @@ import me.anuar2k.engine.worldmap.WorldMap;
 
 import java.util.*;
 
+//TODO: consider extracting a interface
 public class Entity {
     private final Map<Class<? extends Property>, Property> properties = new HashMap<>();
     private final WorldMap worldMap;
     private Coord2D position;
     private PropertyWatcher propertyWatcher = null;
 
-    public Entity(WorldMap worldMap, Coord2D position) {
+    public Entity(WorldMap worldMap) {
         this.worldMap = worldMap;
-        this.position = position.wrapAround(this.worldMap);
     }
 
     public Coord2D getPosition() {
         return this.position;
     }
 
+    public void addToMap(Coord2D at) {
+        this.position = at.wrapAround(this.worldMap);
+        this.worldMap.notifyEntityAdded(this);
+    }
+
     public void move(Coord2D to) {
         Coord2D from = this.position;
         this.position = to.wrapAround(this.worldMap);
-        this.worldMap.notifyEntityMoved(this, from, this.position);
+        this.worldMap.notifyEntityMoved(this, from);
+    }
+
+    public boolean onMap() {
+        return this.position != null;
+    }
+
+    public void removeFromMap() {
+        this.worldMap.notifyEntityRemoved(this);
+        this.position = null;
     }
 
     public void addProperty(Property property) {

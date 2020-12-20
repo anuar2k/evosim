@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlantGrowthRule implements Rule {
-    private final WorldMap worldMap;
     private final RandSource randSource;
     private final double plantEnergy;
     private final int jungleWidth;
@@ -19,8 +18,7 @@ public class PlantGrowthRule implements Rule {
     private final List<Coord2D> jungleCells = new ArrayList<>();
     private final List<Coord2D> nonJungleCells = new ArrayList<>();
 
-    public PlantGrowthRule(WorldMap worldMap, RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
-        this.worldMap = worldMap;
+    public PlantGrowthRule(RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
         this.randSource = randSource;
         this.plantEnergy = plantEnergy;
         this.jungleWidth = jungleWidth;
@@ -28,18 +26,18 @@ public class PlantGrowthRule implements Rule {
     }
 
     @Override
-    public void init() {
-        if (this.jungleWidth > this.worldMap.getWidth() || this.jungleHeight > this.worldMap.getHeight()) {
+    public void init(WorldMap worldMap) {
+        if (this.jungleWidth > worldMap.getWidth() || this.jungleHeight > worldMap.getHeight()) {
             throw new IllegalArgumentException("Jungle can't be larger than map");
         }
 
-        int jungleWidthStart = (this.worldMap.getWidth() - this.jungleWidth) / 2;
+        int jungleWidthStart = (worldMap.getWidth() - this.jungleWidth) / 2;
         int jungleWidthEnd = jungleWidthStart + this.jungleWidth;
-        int jungleHeightStart = (this.worldMap.getHeight() - this.jungleHeight) / 2;
+        int jungleHeightStart = (worldMap.getHeight() - this.jungleHeight) / 2;
         int jungleHeightEnd = jungleWidthEnd + this.jungleHeight;
 
-        for (int x = 0; x < this.worldMap.getWidth(); x++) {
-            for (int y = 0; y < this.worldMap.getWidth(); y++) {
+        for (int x = 0; x < worldMap.getWidth(); x++) {
+            for (int y = 0; y < worldMap.getWidth(); y++) {
                 Coord2D cell = new Coord2D(x, y);
 
                 if (x >= jungleWidthStart && x < jungleWidthEnd && y >= jungleHeightStart && y < jungleHeightEnd) {
@@ -53,25 +51,27 @@ public class PlantGrowthRule implements Rule {
     }
 
     @Override
-    public void tick() {
-        List<Coord2D> emptyJungleCells = this.getCellsWithoutPlants(this.worldMap, this.jungleCells);
-        List<Coord2D> emptyNonJungleCells = this.getCellsWithoutPlants(this.worldMap, this.nonJungleCells);
+    public void tick(WorldMap worldMap) {
+        List<Coord2D> emptyJungleCells = this.getEmptyCells(worldMap, this.jungleCells);
+        List<Coord2D> emptyNonJungleCells = this.getEmptyCells(worldMap, this.nonJungleCells);
 
-        this.spawnPlant(this.worldMap, emptyJungleCells);
-        this.spawnPlant(this.worldMap, emptyNonJungleCells);
+        this.spawnPlant(worldMap, emptyJungleCells);
+        this.spawnPlant(worldMap, emptyNonJungleCells);
 
     }
 
     private void spawnPlant(WorldMap worldMap, List<Coord2D> emptyCells) {
         if (emptyCells.size() > 0) {
             int cellNo = Math.floorMod(this.randSource.next(), emptyCells.size());
-            Entity plant = new Entity(worldMap, emptyCells.get(cellNo));
+
+            Entity plant = new Entity(worldMap);
             plant.addProperty(new PlantProperty(this.plantEnergy));
-            worldMap.addEntity(plant);
+
+            plant.addToMap(emptyCells.get(cellNo));
         }
     }
 
-    private List<Coord2D> getCellsWithoutPlants(WorldMap worldMap, List<Coord2D> cells) {
+    private List<Coord2D> getEmptyCells(WorldMap worldMap, List<Coord2D> cells) {
         return cells.stream().filter(cell -> worldMap.getEntities(cell, PlantProperty.class).findAny().isEmpty())
                 .collect(Collectors.toList());
     }

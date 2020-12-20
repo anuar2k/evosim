@@ -42,12 +42,12 @@ public class CachedWorldMap implements WorldMap, PropertyWatcher {
     }
 
     @Override
-    public void addEntity(Entity entity) {
+    public void notifyEntityAdded(Entity entity) {
 
     }
 
     @Override
-    public void removeEntity(Entity entity) {
+    public void notifyEntityRemoved(Entity entity) {
 
     }
 
@@ -62,7 +62,7 @@ public class CachedWorldMap implements WorldMap, PropertyWatcher {
     }
 
     @Override
-    public void notifyEntityMoved(Entity entity, Coord2D from, Coord2D to) {
+    public void notifyEntityMoved(Entity entity, Coord2D from) {
 
     }
 }

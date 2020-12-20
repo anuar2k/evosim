@@ -1,5 +1,7 @@
 package me.anuar2k.engine.util;
 
+import java.util.Arrays;
+
 public class Genome {
     public static final int GENOME_LENGTH = 32;
     private final byte[] genes;
@@ -18,6 +20,9 @@ public class Genome {
         if (Genome.getMissingGene(genes) != null) {
             throw new IllegalArgumentException("All genes must be present at least once");
         }
+
+        //FIXME: temporary dirty hack; consider using a int[8] array for this
+        Arrays.sort(genes);
 
         this.genes = genes;
     }

@@ -15,8 +15,7 @@ public interface WorldMap {
     public int getWidth();
     public int getHeight();
 
-    public void addEntity(Entity entity);
-    public void removeEntity(Entity entity);
-
-    public void notifyEntityMoved(Entity entity, Coord2D from, Coord2D to);
+    public void notifyEntityAdded(Entity entity);
+    public void notifyEntityMoved(Entity entity, Coord2D from);
+    public void notifyEntityRemoved(Entity entity);
 }

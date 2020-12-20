@@ -11,6 +11,7 @@ import me.anuar2k.engine.util.RandSource;
 import me.anuar2k.engine.worldmap.SimpleWorldMap;
 import me.anuar2k.engine.worldmap.WorldMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultSimulation implements Simulation {
@@ -18,7 +19,8 @@ public class DefaultSimulation implements Simulation {
     private final RandSource randSource;
     private final List<Rule> rules;
 
-    public DefaultSimulation(RandSource randSource,
+    public DefaultSimulation(List<Rule> injectedRules,
+                             RandSource randSource,
                              int width,
                              int height,
                              double startEnergy,
@@ -28,15 +30,19 @@ public class DefaultSimulation implements Simulation {
                              int jungleHeight) {
         this.worldMap = new SimpleWorldMap(width, height);
         this.randSource = randSource;
+        this.rules = new ArrayList<>();
 
-        this.rules = List.of(new AnimalMoveRule(this.worldMap, randSource, moveEnergy),
-                               new DeathRule(this.worldMap),
-                               new AnimalFeedRule(this.worldMap),
-                               new AnimalBreedRule(this.worldMap, randSource, startEnergy / 2),
-                               new PlantGrowthRule(this.worldMap, randSource, plantEnergy, jungleWidth, jungleHeight));
+        List<Rule> defaultRules = List.of(new AnimalMoveRule(randSource, moveEnergy),
+                               new DeathRule(),
+                               new AnimalFeedRule(),
+                               new AnimalBreedRule(randSource, startEnergy / 2),
+                               new PlantGrowthRule(randSource, plantEnergy, jungleWidth, jungleHeight));
+
+        this.rules.addAll(defaultRules);
+        this.rules.addAll(injectedRules);
 
         for (Rule rule : this.rules) {
-            rule.init();
+            rule.init(this.worldMap);
         }
 
         this.spawnAnimal(new Coord2D(0, 0), startEnergy);
@@ -46,26 +52,27 @@ public class DefaultSimulation implements Simulation {
     }
 
     private void spawnAnimal(Coord2D position, double startEnergy) {
-        Entity newAnimal = new Entity(this.worldMap, position);
+        Entity newAnimal = new Entity(this.worldMap);
         newAnimal.addProperty(new AnimalProperty());
         newAnimal.addProperty(new EnergyProperty(startEnergy));
         newAnimal.addProperty(new GenomeProperty(Genome.random(this.randSource)));
         newAnimal.addProperty(new DirectionProperty(Direction.N.rotate(this.randSource.next())));
-        this.worldMap.addEntity(newAnimal);
+
+        newAnimal.addToMap(position);
     }
 
     @Override
     public void tick() {
         for (Rule rule : this.rules) {
-            rule.tick();
+            rule.tick(this.worldMap);
         }
 
         System.out.println("-----------------------------------------------");
         for (int x = 0; x < this.worldMap.getWidth(); x++) {
             for (int y = 0; y < this.worldMap.getHeight(); y++) {
                 Coord2D cell = new Coord2D(x, y);
-                boolean hasAnimal = !this.worldMap.getEntities(cell, AnimalProperty.class).findAny().isEmpty();
-                boolean hasPlant = !this.worldMap.getEntities(cell, PlantProperty.class).findAny().isEmpty();
+                boolean hasAnimal = this.worldMap.getEntities(cell, AnimalProperty.class).findAny().isPresent();
+                boolean hasPlant = this.worldMap.getEntities(cell, PlantProperty.class).findAny().isPresent();
                 boolean both = hasAnimal && hasPlant;
 
                 if (both) {

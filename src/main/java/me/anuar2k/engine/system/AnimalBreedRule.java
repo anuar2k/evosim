@@ -14,28 +14,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnimalBreedRule implements Rule {
-    private final WorldMap worldMap;
     private final RandSource randSource;
     private final double minEnergy;
 
-    public AnimalBreedRule(WorldMap worldMap, RandSource randSource, double minEnergy) {
-        this.worldMap = worldMap;
+    public AnimalBreedRule(RandSource randSource, double minEnergy) {
         this.randSource = randSource;
         this.minEnergy = minEnergy;
     }
 
     @Override
-    public void init() {
+    public void init(WorldMap worldMap) {
 
     }
 
     @Override
-    public void tick() {
-        List<Entity> childrenToDisplace = new ArrayList<>();
-        for (int x = 0; x < this.worldMap.getWidth(); x++) {
-            for (int y = 0; y < this.worldMap.getHeight(); y++) {
+    public void tick(WorldMap worldMap) {
+        List<Pair<Entity, Coord2D>> childrenToDisplace = new ArrayList<>();
+        for (int x = 0; x < worldMap.getWidth(); x++) {
+            for (int y = 0; y < worldMap.getHeight(); y++) {
                 Coord2D cell = new Coord2D(x, y);
-                List<Entity> parents = this.worldMap.getEntities(cell, AnimalProperty.class)
+
+                List<Entity> parents = worldMap.getEntities(cell, AnimalProperty.class)
                         .map(animal -> new Pair<>(animal, animal.getProperty(EnergyProperty.class).getEnergy()))
                         .filter(pair -> pair.right >= this.minEnergy)
                         .sorted((p1, p2) -> Double.compare(p2.right, p1.right))
@@ -56,16 +55,15 @@ public class AnimalBreedRule implements Rule {
 
                     double childEnergy = parent1GivenEnergy + parent2GivenEnergy;
                     Genome childGenome = Genome.cross(this.randSource, parent1Genome, parent2Genome);
-                    Direction childDirection = Direction.N.rotate(this.randSource.next());
+                    Direction childDirection = Direction.random(this.randSource);
 
-                    Entity child = new Entity(this.worldMap, cell);
+                    Entity child = new Entity(worldMap);
                     child.addProperty(new AnimalProperty());
                     child.addProperty(new EnergyProperty(childEnergy));
                     child.addProperty(new GenomeProperty(childGenome));
                     child.addProperty(new DirectionProperty(childDirection));
 
-                    this.worldMap.addEntity(child);
-                    childrenToDisplace.add(child);
+                    childrenToDisplace.add(new Pair<>(child, cell));
 
                     parent1Energy.adjustEnergy(-parent1GivenEnergy);
                     parent2Energy.adjustEnergy(-parent2GivenEnergy);
@@ -73,10 +71,13 @@ public class AnimalBreedRule implements Rule {
             }
         }
 
-        for (Entity child : childrenToDisplace) {
+        for (Pair<Entity, Coord2D> childToDisplace : childrenToDisplace) {
+            Entity child = childToDisplace.left;
+            Coord2D centerPosition = childToDisplace.right;
+
             List<Coord2D> availableNeighbours = Arrays.stream(Direction.values())
                     .map(direction -> direction.getCoordDelta())
-                    .filter(delta -> this.worldMap.getEntities(child.getPosition().add(delta)).findAny().isEmpty())
+                    .filter(delta -> worldMap.getEntities(centerPosition.add(delta)).findAny().isEmpty())
                     .collect(Collectors.toList());
 
             Coord2D randomDelta;
@@ -84,9 +85,10 @@ public class AnimalBreedRule implements Rule {
                 randomDelta = availableNeighbours.get(Math.floorMod(this.randSource.next(), availableNeighbours.size()));
             }
             else {
-                randomDelta = Direction.N.rotate(this.randSource.next()).getCoordDelta();
+                randomDelta = Direction.random(this.randSource).getCoordDelta();
             }
-            child.move(child.getPosition().add(randomDelta));
+
+            child.addToMap(centerPosition.add(randomDelta));
         }
     }
 }

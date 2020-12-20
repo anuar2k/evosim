@@ -39,7 +39,7 @@ public class SimpleWorldMap implements WorldMap {
     }
 
     @Override
-    public void addEntity(Entity entity) {
+    public void notifyEntityAdded(Entity entity) {
         this.entities.get(entity.getPosition()).add(entity);
     }
 
@@ -65,13 +65,13 @@ public class SimpleWorldMap implements WorldMap {
     }
 
     @Override
-    public void removeEntity(Entity entity) {
-        this.entities.get(entity.getPosition()).remove(entity);
+    public void notifyEntityMoved(Entity entity, Coord2D from) {
+        this.entities.get(from).remove(entity);
+        this.entities.get(entity.getPosition()).add(entity);
     }
 
     @Override
-    public void notifyEntityMoved(Entity entity, Coord2D from, Coord2D to) {
-        this.entities.get(from).remove(entity);
-        this.entities.get(to).add(entity);
+    public void notifyEntityRemoved(Entity entity) {
+        this.entities.get(entity.getPosition()).remove(entity);
     }
 }

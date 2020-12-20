@@ -14,28 +14,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalMoveRule implements Rule {
-    private final WorldMap worldMap;
     private final RandSource randSource;
     private final double moveEnergy;
 
-    public AnimalMoveRule(WorldMap worldMap, RandSource randSource, double moveEnergy) {
-        this.worldMap = worldMap;
+    public AnimalMoveRule(RandSource randSource, double moveEnergy) {
         this.randSource = randSource;
         this.moveEnergy = moveEnergy;
     }
 
     @Override
-    public void init() {
+    public void init(WorldMap worldMap) {
 
     }
 
     @Override
-    public void tick() {
+    public void tick(WorldMap worldMap) {
         List<Entity> toMove = new ArrayList<>();
 
-        for (int x = 0; x < this.worldMap.getWidth(); x++) {
-            for (int y = 0; y < this.worldMap.getHeight(); y++) {
-                this.worldMap.getEntities(new Coord2D(x, y), AnimalProperty.class).forEach(animal -> {
+        for (int x = 0; x < worldMap.getWidth(); x++) {
+            for (int y = 0; y < worldMap.getHeight(); y++) {
+                worldMap.getEntities(new Coord2D(x, y), AnimalProperty.class).forEach(animal -> {
                     EnergyProperty energy = animal.getProperty(EnergyProperty.class);
                     energy.adjustEnergy(-this.moveEnergy);
 

@@ -18,6 +18,10 @@ public enum Direction {
         this.coordDelta = coordDelta;
     }
 
+    public static Direction random(RandSource randSource) {
+        return Direction.N.rotate(randSource.next());
+    }
+
     public Direction rotate(int delta) {
         return Direction.values()[Math.floorMod(this.ordinal() + delta, Direction.values().length)];
     }
