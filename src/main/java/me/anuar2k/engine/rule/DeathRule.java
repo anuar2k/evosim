@@ -1,4 +1,4 @@
-package me.anuar2k.engine.system;
+package me.anuar2k.engine.rule;
 
 import me.anuar2k.engine.util.Coord2D;
 import me.anuar2k.engine.property.EnergyProperty;

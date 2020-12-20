@@ -2,8 +2,8 @@ package me.anuar2k.engine.simulation;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.*;
-import me.anuar2k.engine.system.*;
-import me.anuar2k.engine.system.Rule;
+import me.anuar2k.engine.rule.*;
+import me.anuar2k.engine.rule.Rule;
 import me.anuar2k.engine.util.Coord2D;
 import me.anuar2k.engine.util.Direction;
 import me.anuar2k.engine.util.Genome;
