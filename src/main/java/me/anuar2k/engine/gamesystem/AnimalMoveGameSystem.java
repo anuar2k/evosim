@@ -1,4 +1,4 @@
-package me.anuar2k.engine.rule;
+package me.anuar2k.engine.gamesystem;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.AnimalProperty;
@@ -13,11 +13,11 @@ import me.anuar2k.engine.worldmap.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimalMoveRule implements Rule {
+public class AnimalMoveGameSystem implements GameSystem {
     private final RandSource randSource;
     private final double moveEnergy;
 
-    public AnimalMoveRule(RandSource randSource, double moveEnergy) {
+    public AnimalMoveGameSystem(RandSource randSource, double moveEnergy) {
         this.randSource = randSource;
         this.moveEnergy = moveEnergy;
     }

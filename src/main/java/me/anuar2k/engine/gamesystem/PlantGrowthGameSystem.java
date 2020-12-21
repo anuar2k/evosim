@@ -1,6 +1,7 @@
-package me.anuar2k.engine.rule;
+package me.anuar2k.engine.gamesystem;
 
 import me.anuar2k.engine.entity.Entity;
+import me.anuar2k.engine.property.JungleProperty;
 import me.anuar2k.engine.property.PlantProperty;
 import me.anuar2k.engine.util.Coord2D;
 import me.anuar2k.engine.util.RandSource;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlantGrowthRule implements Rule {
+public class PlantGrowthGameSystem implements GameSystem {
     private final RandSource randSource;
     private final double plantEnergy;
     private final int jungleWidth;
@@ -18,7 +19,7 @@ public class PlantGrowthRule implements Rule {
     private final List<Coord2D> jungleCells = new ArrayList<>();
     private final List<Coord2D> nonJungleCells = new ArrayList<>();
 
-    public PlantGrowthRule(RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
+    public PlantGrowthGameSystem(RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
         this.randSource = randSource;
         this.plantEnergy = plantEnergy;
         this.jungleWidth = jungleWidth;
@@ -42,6 +43,8 @@ public class PlantGrowthRule implements Rule {
 
                 if (x >= jungleWidthStart && x < jungleWidthEnd && y >= jungleHeightStart && y < jungleHeightEnd) {
                     this.jungleCells.add(cell);
+                    Entity jungle = new Entity(worldMap);
+                    jungle.addProperty(new JungleProperty());
                 }
                 else {
                     this.nonJungleCells.add(cell);

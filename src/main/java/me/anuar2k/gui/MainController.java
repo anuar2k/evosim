@@ -3,7 +3,7 @@ package me.anuar2k.gui;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Priority;
 import me.anuar2k.gui.mappane.MapPane;
 
 import java.net.URL;
@@ -15,6 +15,15 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.mapcontainer.getChildren().addAll(new MapPane(Color.RED), new MapPane(Color.BLUEVIOLET));
+        MapPane pane1 = new MapPane(mapcontainer);
+        MapPane pane2 = new MapPane(mapcontainer);
+
+        HBox.setHgrow(pane1, Priority.SOMETIMES);
+        HBox.setHgrow(pane2, Priority.SOMETIMES);
+        this.mapcontainer.getChildren().add(pane1);
+        this.mapcontainer.getChildren().add(pane2);
+
+        pane1.redraw();
+        pane2.redraw();
     }
 }

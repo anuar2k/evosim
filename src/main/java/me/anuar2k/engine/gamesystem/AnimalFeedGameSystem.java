@@ -1,4 +1,4 @@
-package me.anuar2k.engine.rule;
+package me.anuar2k.engine.gamesystem;
 
 import me.anuar2k.engine.property.AnimalProperty;
 import me.anuar2k.engine.property.EnergyProperty;
@@ -10,8 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnimalFeedRule implements Rule {
-    public AnimalFeedRule() {
+public class AnimalFeedGameSystem implements GameSystem {
+    public AnimalFeedGameSystem() {
         
     }
 

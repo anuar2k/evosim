@@ -2,8 +2,8 @@ package me.anuar2k.engine.simulation;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.*;
-import me.anuar2k.engine.rule.*;
-import me.anuar2k.engine.rule.Rule;
+import me.anuar2k.engine.gamesystem.*;
+import me.anuar2k.engine.gamesystem.GameSystem;
 import me.anuar2k.engine.util.Coord2D;
 import me.anuar2k.engine.util.Direction;
 import me.anuar2k.engine.util.Genome;
@@ -17,9 +17,9 @@ import java.util.List;
 public class DefaultSimulation implements Simulation {
     private final WorldMap worldMap;
     private final RandSource randSource;
-    private final List<Rule> rules;
+    private final List<GameSystem> gameSystems;
 
-    public DefaultSimulation(List<Rule> injectedRules,
+    public DefaultSimulation(List<GameSystem> injectedGameSystems,
                              RandSource randSource,
                              int width,
                              int height,
@@ -30,19 +30,19 @@ public class DefaultSimulation implements Simulation {
                              int jungleHeight) {
         this.worldMap = new SimpleWorldMap(width, height);
         this.randSource = randSource;
-        this.rules = new ArrayList<>();
+        this.gameSystems = new ArrayList<>();
 
-        List<Rule> defaultRules = List.of(new AnimalMoveRule(randSource, moveEnergy),
-                               new DeathRule(),
-                               new AnimalFeedRule(),
-                               new AnimalBreedRule(randSource, startEnergy / 2),
-                               new PlantGrowthRule(randSource, plantEnergy, jungleWidth, jungleHeight));
+        List<GameSystem> defaultGameSystems = List.of(new AnimalMoveGameSystem(randSource, moveEnergy),
+                               new DeathGameSystem(),
+                               new AnimalFeedGameSystem(),
+                               new AnimalBreedGameSystem(randSource, startEnergy / 2),
+                               new PlantGrowthGameSystem(randSource, plantEnergy, jungleWidth, jungleHeight));
 
-        this.rules.addAll(defaultRules);
-        this.rules.addAll(injectedRules);
+        this.gameSystems.addAll(defaultGameSystems);
+        this.gameSystems.addAll(injectedGameSystems);
 
-        for (Rule rule : this.rules) {
-            rule.init(this.worldMap);
+        for (GameSystem gameSystem : this.gameSystems) {
+            gameSystem.init(this.worldMap);
         }
 
         this.spawnAnimal(new Coord2D(0, 0), startEnergy);
@@ -53,18 +53,19 @@ public class DefaultSimulation implements Simulation {
 
     private void spawnAnimal(Coord2D position, double startEnergy) {
         Entity newAnimal = new Entity(this.worldMap);
-        newAnimal.addProperty(new AnimalProperty());
+        newAnimal.addProperty(AnimalProperty.INSTANCE);
         newAnimal.addProperty(new EnergyProperty(startEnergy));
         newAnimal.addProperty(new GenomeProperty(Genome.random(this.randSource)));
-        newAnimal.addProperty(new DirectionProperty(Direction.N.rotate(this.randSource.next())));
+        newAnimal.addProperty(new DirectionProperty(Direction.random(this.randSource)));
+        newAnimal.addProperty(new ChildrenProperty());
 
         newAnimal.addToMap(position);
     }
 
     @Override
     public void tick() {
-        for (Rule rule : this.rules) {
-            rule.tick(this.worldMap);
+        for (GameSystem gameSystem : this.gameSystems) {
+            gameSystem.tick(this.worldMap);
         }
 
         System.out.println("-----------------------------------------------");

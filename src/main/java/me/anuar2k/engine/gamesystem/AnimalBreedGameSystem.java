@@ -1,10 +1,7 @@
-package me.anuar2k.engine.rule;
+package me.anuar2k.engine.gamesystem;
 
 import me.anuar2k.engine.entity.Entity;
-import me.anuar2k.engine.property.AnimalProperty;
-import me.anuar2k.engine.property.DirectionProperty;
-import me.anuar2k.engine.property.EnergyProperty;
-import me.anuar2k.engine.property.GenomeProperty;
+import me.anuar2k.engine.property.*;
 import me.anuar2k.engine.util.*;
 import me.anuar2k.engine.worldmap.WorldMap;
 
@@ -13,11 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnimalBreedRule implements Rule {
+public class AnimalBreedGameSystem implements GameSystem {
     private final RandSource randSource;
     private final double minEnergy;
 
-    public AnimalBreedRule(RandSource randSource, double minEnergy) {
+    public AnimalBreedGameSystem(RandSource randSource, double minEnergy) {
         this.randSource = randSource;
         this.minEnergy = minEnergy;
     }
@@ -47,6 +44,8 @@ public class AnimalBreedRule implements Rule {
                     Entity parent2 = parents.get(1);
                     EnergyProperty parent1Energy = parent1.getProperty(EnergyProperty.class);
                     EnergyProperty parent2Energy = parent2.getProperty(EnergyProperty.class);
+                    ChildrenProperty parent1Children = parent1.getProperty(ChildrenProperty.class);
+                    ChildrenProperty parent2Children = parent1.getProperty(ChildrenProperty.class);
                     Genome parent1Genome = parent1.getProperty(GenomeProperty.class).getGenome();
                     Genome parent2Genome = parent2.getProperty(GenomeProperty.class).getGenome();
 
@@ -58,10 +57,14 @@ public class AnimalBreedRule implements Rule {
                     Direction childDirection = Direction.random(this.randSource);
 
                     Entity child = new Entity(worldMap);
-                    child.addProperty(new AnimalProperty());
+                    ChildrenProperty childChildren = new ChildrenProperty();
+                    child.addProperty(AnimalProperty.INSTANCE);
                     child.addProperty(new EnergyProperty(childEnergy));
                     child.addProperty(new GenomeProperty(childGenome));
                     child.addProperty(new DirectionProperty(childDirection));
+                    child.addProperty(childChildren);
+                    parent1Children.addChild(childChildren);
+                    parent2Children.addChild(childChildren);
 
                     childrenToDisplace.add(new Pair<>(child, cell));
 

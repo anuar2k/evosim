@@ -1,4 +1,4 @@
-package me.anuar2k.engine.rule;
+package me.anuar2k.engine.gamesystem;
 
 import me.anuar2k.engine.util.Coord2D;
 import me.anuar2k.engine.property.EnergyProperty;
@@ -6,8 +6,8 @@ import me.anuar2k.engine.worldmap.WorldMap;
 
 import java.util.stream.Collectors;
 
-public class DeathRule implements Rule {
-    public DeathRule() {
+public class DeathGameSystem implements GameSystem {
+    public DeathGameSystem() {
         
     }
 

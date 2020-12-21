@@ -14,7 +14,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(this.getClass().getResource("styles.css").toExternalForm());
 
-        primaryStage.setMinWidth(900);
+        primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(600);
         primaryStage.setTitle("JavaFX and Gradle");
         primaryStage.setScene(scene);
