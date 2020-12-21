@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlantGrowthWorldSystem implements WorldSystem {
+    private WorldMap worldMap;
     private final RandSource randSource;
     private final double plantEnergy;
     private final int jungleWidth;
@@ -28,6 +29,8 @@ public class PlantGrowthWorldSystem implements WorldSystem {
 
     @Override
     public void init(WorldMap worldMap) {
+        this.worldMap = worldMap;
+
         if (this.jungleWidth > worldMap.getWidth() || this.jungleHeight > worldMap.getHeight()) {
             throw new IllegalArgumentException("Jungle can't be larger than map");
         }
@@ -54,12 +57,12 @@ public class PlantGrowthWorldSystem implements WorldSystem {
     }
 
     @Override
-    public void tick(WorldMap worldMap) {
-        List<Coord2D> emptyJungleCells = this.getEmptyCells(worldMap, this.jungleCells);
-        List<Coord2D> emptyNonJungleCells = this.getEmptyCells(worldMap, this.nonJungleCells);
+    public void tick() {
+        List<Coord2D> emptyJungleCells = this.getEmptyCells(this.worldMap, this.jungleCells);
+        List<Coord2D> emptyNonJungleCells = this.getEmptyCells(this.worldMap, this.nonJungleCells);
 
-        this.spawnPlant(worldMap, emptyJungleCells);
-        this.spawnPlant(worldMap, emptyNonJungleCells);
+        this.spawnPlant(this.worldMap, emptyJungleCells);
+        this.spawnPlant(this.worldMap, emptyNonJungleCells);
 
     }
 

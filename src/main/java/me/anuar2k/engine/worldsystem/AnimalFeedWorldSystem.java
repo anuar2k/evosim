@@ -11,28 +11,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnimalFeedWorldSystem implements WorldSystem {
+    private WorldMap worldMap = null;
     public AnimalFeedWorldSystem() {
         
     }
 
     @Override
     public void init(WorldMap worldMap) {
-
+        this.worldMap = worldMap;
     }
 
     @Override
-    public void tick(WorldMap worldMap) {
-        for (int x = 0; x < worldMap.getWidth(); x++) {
-            for (int y = 0; y < worldMap.getHeight(); y++) {
+    public void tick() {
+        for (int x = 0; x < this.worldMap.getWidth(); x++) {
+            for (int y = 0; y < this.worldMap.getHeight(); y++) {
                 Coord2D currentCell = new Coord2D(x, y);
 
-                worldMap.getEntities(currentCell, PlantProperty.class)
+                this.worldMap.getEntities(currentCell, PlantProperty.class)
                     .findAny()
-                    .ifPresent(plant -> worldMap.getEntities(currentCell, AnimalProperty.class)
+                    .ifPresent(plant -> this.worldMap.getEntities(currentCell, AnimalProperty.class)
                         .map(animal -> animal.getProperty(EnergyProperty.class).getEnergy())
                         .max(Comparator.naturalOrder())
                         .ifPresent(maxAnimalEnergy -> {
-                            List<EnergyProperty> props = worldMap.getEntities(currentCell, AnimalProperty.class)
+                            List<EnergyProperty> props = this.worldMap.getEntities(currentCell, AnimalProperty.class)
                                 .map(animal -> animal.getProperty(EnergyProperty.class))
                                 .filter(prop -> prop.getEnergy() == maxAnimalEnergy)
                                 .collect(Collectors.toList());

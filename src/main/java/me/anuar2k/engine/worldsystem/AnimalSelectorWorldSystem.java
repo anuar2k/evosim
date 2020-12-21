@@ -1,6 +1,5 @@
 package me.anuar2k.engine.worldsystem;
 
-import me.anuar2k.engine.property.AnimalProperty;
 import me.anuar2k.engine.worldmap.WorldMap;
 
 public class AnimalSelectorWorldSystem implements WorldSystem {
@@ -14,7 +13,7 @@ public class AnimalSelectorWorldSystem implements WorldSystem {
     }
 
     @Override
-    public void tick(WorldMap worldMap) {
+    public void tick() {
 
     }
 }

@@ -28,6 +28,7 @@ public class MapStateWorldSystem implements WorldSystem {
             Color.rgb(255, 128, 0)
     };
 
+    private WorldMap worldMap;
     private int epochNo = 0;
     private MapState mapState = null;
     private final HashMap<Entity, TrackedAnimalData> animalTracker = new HashMap<>();
@@ -35,30 +36,30 @@ public class MapStateWorldSystem implements WorldSystem {
 
     @Override
     public void init(WorldMap worldMap) {
-
+        this.worldMap = worldMap;
     }
 
     @Override
-    public void tick(WorldMap worldMap) {
+    public void tick() {
         this.epochNo++;
-        this.mapState = this.processMap(worldMap);
+        this.mapState = this.processMap();
     }
 
     public MapState getMapState() {
         return this.mapState;
     }
 
-    private MapState processMap(WorldMap worldMap) {
+    private MapState processMap() {
         int animalCount = 0;
         double maxEnergy = 0;
 
-        Color[][] cellColors = new Color[worldMap.getWidth()][worldMap.getHeight()];
+        Color[][] cellColors = new Color[this.worldMap.getWidth()][this.worldMap.getHeight()];
 
-        for (int x = 0; x < worldMap.getWidth(); x++) {
-            for (int y = 0; y < worldMap.getHeight(); y++) {
+        for (int x = 0; x < this.worldMap.getWidth(); x++) {
+            for (int y = 0; y < this.worldMap.getHeight(); y++) {
                 Pair<Integer, Color> prioritizedColor = new Pair<>(0, MapStateWorldSystem.desertColor);
 
-                for (Entity entity : worldMap.getEntities(new Coord2D(x, y)).collect(Collectors.toList())) {
+                for (Entity entity : this.worldMap.getEntities(new Coord2D(x, y)).collect(Collectors.toList())) {
                     if (entity.hasProperty(JungleProperty.class)) {
                         if (prioritizedColor.left < 1) {
                             prioritizedColor = new Pair<>(1, MapStateWorldSystem.jungleColor);

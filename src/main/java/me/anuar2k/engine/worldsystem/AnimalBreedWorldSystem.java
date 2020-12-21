@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnimalBreedWorldSystem implements WorldSystem {
+    private WorldMap worldMap = null;
     private final RandSource randSource;
     private final double minEnergy;
 
@@ -21,17 +22,17 @@ public class AnimalBreedWorldSystem implements WorldSystem {
 
     @Override
     public void init(WorldMap worldMap) {
-
+        this.worldMap = worldMap;
     }
 
     @Override
-    public void tick(WorldMap worldMap) {
+    public void tick() {
         List<Pair<Entity, Coord2D>> childrenToDisplace = new ArrayList<>();
-        for (int x = 0; x < worldMap.getWidth(); x++) {
-            for (int y = 0; y < worldMap.getHeight(); y++) {
+        for (int x = 0; x < this.worldMap.getWidth(); x++) {
+            for (int y = 0; y < this.worldMap.getHeight(); y++) {
                 Coord2D cell = new Coord2D(x, y);
 
-                List<Entity> parents = worldMap.getEntities(cell, AnimalProperty.class)
+                List<Entity> parents = this.worldMap.getEntities(cell, AnimalProperty.class)
                         .map(animal -> new Pair<>(animal, animal.getProperty(EnergyProperty.class).getEnergy()))
                         .filter(pair -> pair.right >= this.minEnergy)
                         .sorted((p1, p2) -> Double.compare(p2.right, p1.right))
@@ -56,7 +57,7 @@ public class AnimalBreedWorldSystem implements WorldSystem {
                     Genome childGenome = Genome.cross(this.randSource, parent1Genome, parent2Genome);
                     Direction childDirection = Direction.random(this.randSource);
 
-                    Entity child = new Entity(worldMap);
+                    Entity child = new Entity(this.worldMap);
                     ChildrenProperty childChildren = new ChildrenProperty();
                     child.addProperty(AnimalProperty.INSTANCE);
                     child.addProperty(new EnergyProperty(childEnergy));
@@ -80,7 +81,7 @@ public class AnimalBreedWorldSystem implements WorldSystem {
 
             List<Coord2D> availableNeighbours = Arrays.stream(Direction.values())
                     .map(direction -> direction.getCoordDelta())
-                    .filter(delta -> worldMap.getEntities(centerPosition.add(delta)).findAny().isEmpty())
+                    .filter(delta -> this.worldMap.getEntities(centerPosition.add(delta)).findAny().isEmpty())
                     .collect(Collectors.toList());
 
             Coord2D randomDelta;

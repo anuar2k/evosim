@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalMoveWorldSystem implements WorldSystem {
+    private WorldMap worldMap = null;
     private final RandSource randSource;
     private final double moveEnergy;
 
@@ -24,16 +25,16 @@ public class AnimalMoveWorldSystem implements WorldSystem {
 
     @Override
     public void init(WorldMap worldMap) {
-
+        this.worldMap = worldMap;
     }
 
     @Override
-    public void tick(WorldMap worldMap) {
+    public void tick() {
         List<Entity> toMove = new ArrayList<>();
 
-        for (int x = 0; x < worldMap.getWidth(); x++) {
-            for (int y = 0; y < worldMap.getHeight(); y++) {
-                worldMap.getEntities(new Coord2D(x, y), AnimalProperty.class).forEach(animal -> {
+        for (int x = 0; x < this.worldMap.getWidth(); x++) {
+            for (int y = 0; y < this.worldMap.getHeight(); y++) {
+                this.worldMap.getEntities(new Coord2D(x, y), AnimalProperty.class).forEach(animal -> {
                     EnergyProperty energy = animal.getProperty(EnergyProperty.class);
                     energy.adjustEnergy(-this.moveEnergy);
 

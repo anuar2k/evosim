@@ -65,7 +65,7 @@ public class DefaultSimulation implements Simulation {
     @Override
     public void tick() {
         for (WorldSystem worldSystem : this.worldSystems) {
-            worldSystem.tick(this.worldMap);
+            worldSystem.tick();
         }
 
         System.out.println("-----------------------------------------------");
