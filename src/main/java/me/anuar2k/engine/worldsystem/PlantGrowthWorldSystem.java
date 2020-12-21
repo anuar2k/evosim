@@ -1,4 +1,4 @@
-package me.anuar2k.engine.gamesystem;
+package me.anuar2k.engine.worldsystem;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.JungleProperty;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlantGrowthGameSystem implements GameSystem {
+public class PlantGrowthWorldSystem implements WorldSystem {
     private final RandSource randSource;
     private final double plantEnergy;
     private final int jungleWidth;
@@ -19,7 +19,7 @@ public class PlantGrowthGameSystem implements GameSystem {
     private final List<Coord2D> jungleCells = new ArrayList<>();
     private final List<Coord2D> nonJungleCells = new ArrayList<>();
 
-    public PlantGrowthGameSystem(RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
+    public PlantGrowthWorldSystem(RandSource randSource, double plantEnergy, int jungleWidth, int jungleHeight) {
         this.randSource = randSource;
         this.plantEnergy = plantEnergy;
         this.jungleWidth = jungleWidth;

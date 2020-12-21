@@ -1,4 +1,4 @@
-package me.anuar2k.engine.gamesystem;
+package me.anuar2k.engine.worldsystem;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.*;
@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnimalBreedGameSystem implements GameSystem {
+public class AnimalBreedWorldSystem implements WorldSystem {
     private final RandSource randSource;
     private final double minEnergy;
 
-    public AnimalBreedGameSystem(RandSource randSource, double minEnergy) {
+    public AnimalBreedWorldSystem(RandSource randSource, double minEnergy) {
         this.randSource = randSource;
         this.minEnergy = minEnergy;
     }

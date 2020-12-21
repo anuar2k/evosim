@@ -6,7 +6,7 @@ public class MapState {
     private final int epochNo;
     private final Color[][] cellColors;
     private final int animalCount;
-    private final int[] dominantGenome;
+    private final byte[] dominantGenome;
     private final double averageEnergy;
     private final double averageLifeLength;
     private final double averageChildrenCount;
@@ -14,7 +14,7 @@ public class MapState {
     public MapState(int epochNo,
                     Color[][] cellColors,
                     int animalCount,
-                    int[] dominantGenome,
+                    byte[] dominantGenome,
                     double averageEnergy,
                     double averageLifeLength,
                     double averageChildrenCount) {
@@ -39,7 +39,7 @@ public class MapState {
         return this.animalCount;
     }
 
-    public int[] getDominantGenome() {
+    public byte[] getDominantGenome() {
         return this.dominantGenome;
     }
 

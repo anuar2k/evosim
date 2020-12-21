@@ -11,7 +11,7 @@ public class ChildrenProperty implements Property {
     }
 
     public void addChild(ChildrenProperty child) {
-
+        this.children.add(child);
     }
 
     public List<ChildrenProperty> getChildren() {

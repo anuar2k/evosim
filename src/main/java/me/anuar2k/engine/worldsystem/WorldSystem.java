@@ -1,8 +1,8 @@
-package me.anuar2k.engine.gamesystem;
+package me.anuar2k.engine.worldsystem;
 
 import me.anuar2k.engine.worldmap.WorldMap;
 
-public interface GameSystem {
+public interface WorldSystem {
     void init(WorldMap worldMap);
     void tick(WorldMap worldMap);
 }

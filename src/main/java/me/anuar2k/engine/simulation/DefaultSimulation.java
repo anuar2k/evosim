@@ -2,8 +2,8 @@ package me.anuar2k.engine.simulation;
 
 import me.anuar2k.engine.entity.Entity;
 import me.anuar2k.engine.property.*;
-import me.anuar2k.engine.gamesystem.*;
-import me.anuar2k.engine.gamesystem.GameSystem;
+import me.anuar2k.engine.worldsystem.*;
+import me.anuar2k.engine.worldsystem.WorldSystem;
 import me.anuar2k.engine.util.Coord2D;
 import me.anuar2k.engine.util.Direction;
 import me.anuar2k.engine.util.Genome;
@@ -17,9 +17,9 @@ import java.util.List;
 public class DefaultSimulation implements Simulation {
     private final WorldMap worldMap;
     private final RandSource randSource;
-    private final List<GameSystem> gameSystems;
+    private final List<WorldSystem> worldSystems;
 
-    public DefaultSimulation(List<GameSystem> injectedGameSystems,
+    public DefaultSimulation(List<WorldSystem> injectedWorldSystems,
                              RandSource randSource,
                              int width,
                              int height,
@@ -30,19 +30,19 @@ public class DefaultSimulation implements Simulation {
                              int jungleHeight) {
         this.worldMap = new SimpleWorldMap(width, height);
         this.randSource = randSource;
-        this.gameSystems = new ArrayList<>();
+        this.worldSystems = new ArrayList<>();
 
-        List<GameSystem> defaultGameSystems = List.of(new AnimalMoveGameSystem(randSource, moveEnergy),
-                               new DeathGameSystem(),
-                               new AnimalFeedGameSystem(),
-                               new AnimalBreedGameSystem(randSource, startEnergy / 2),
-                               new PlantGrowthGameSystem(randSource, plantEnergy, jungleWidth, jungleHeight));
+        List<WorldSystem> defaultWorldSystems = List.of(new AnimalMoveWorldSystem(randSource, moveEnergy),
+                               new DeathWorldSystem(),
+                               new AnimalFeedWorldSystem(),
+                               new AnimalBreedWorldSystem(randSource, startEnergy / 2),
+                               new PlantGrowthWorldSystem(randSource, plantEnergy, jungleWidth, jungleHeight));
 
-        this.gameSystems.addAll(defaultGameSystems);
-        this.gameSystems.addAll(injectedGameSystems);
+        this.worldSystems.addAll(defaultWorldSystems);
+        this.worldSystems.addAll(injectedWorldSystems);
 
-        for (GameSystem gameSystem : this.gameSystems) {
-            gameSystem.init(this.worldMap);
+        for (WorldSystem worldSystem : this.worldSystems) {
+            worldSystem.init(this.worldMap);
         }
 
         this.spawnAnimal(new Coord2D(0, 0), startEnergy);
@@ -64,8 +64,8 @@ public class DefaultSimulation implements Simulation {
 
     @Override
     public void tick() {
-        for (GameSystem gameSystem : this.gameSystems) {
-            gameSystem.tick(this.worldMap);
+        for (WorldSystem worldSystem : this.worldSystems) {
+            worldSystem.tick(this.worldMap);
         }
 
         System.out.println("-----------------------------------------------");

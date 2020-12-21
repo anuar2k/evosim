@@ -1,4 +1,4 @@
-package me.anuar2k.engine.gamesystem;
+package me.anuar2k.engine.worldsystem;
 
 import me.anuar2k.engine.property.AnimalProperty;
 import me.anuar2k.engine.property.EnergyProperty;
@@ -10,8 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnimalFeedGameSystem implements GameSystem {
-    public AnimalFeedGameSystem() {
+public class AnimalFeedWorldSystem implements WorldSystem {
+    public AnimalFeedWorldSystem() {
         
     }
 
