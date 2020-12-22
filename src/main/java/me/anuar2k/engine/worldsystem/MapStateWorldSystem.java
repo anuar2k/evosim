@@ -138,7 +138,9 @@ public class MapStateWorldSystem implements WorldSystem {
         double totalLifeLength = this.lifeLengths.stream().map(l -> (double)l).reduce((double) 0, (acc, val) -> acc + val);
 
         if (animalCount == 0) {
-            return new MapState(this.epochNo,
+            return new MapState(this.worldMap.getWidth(),
+                    this.worldMap.getHeight(),
+                    this.epochNo,
                     cellColors,
                     animalCount,
                     null,
@@ -150,7 +152,9 @@ public class MapStateWorldSystem implements WorldSystem {
             double averageEnergy = totalEnergy / animalCount;
             double averageLifeLength = this.lifeLengths.size() != 0 ? totalLifeLength / this.lifeLengths.size() : 0;
             double averageChildrenCount = totalChildrenCount / animalCount;
-            return new MapState(this.epochNo,
+            return new MapState(this.worldMap.getWidth(),
+                    this.worldMap.getHeight(),
+                    this.epochNo,
                     cellColors,
                     animalCount,
                     dominantGenome,

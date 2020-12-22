@@ -38,16 +38,17 @@ public class PlantGrowthWorldSystem implements WorldSystem {
         int jungleWidthStart = (worldMap.getWidth() - this.jungleWidth) / 2;
         int jungleWidthEnd = jungleWidthStart + this.jungleWidth;
         int jungleHeightStart = (worldMap.getHeight() - this.jungleHeight) / 2;
-        int jungleHeightEnd = jungleWidthEnd + this.jungleHeight;
+        int jungleHeightEnd = jungleHeightStart + this.jungleHeight;
 
         for (int x = 0; x < worldMap.getWidth(); x++) {
-            for (int y = 0; y < worldMap.getWidth(); y++) {
+            for (int y = 0; y < worldMap.getHeight(); y++) {
                 Coord2D cell = new Coord2D(x, y);
 
                 if (x >= jungleWidthStart && x < jungleWidthEnd && y >= jungleHeightStart && y < jungleHeightEnd) {
                     this.jungleCells.add(cell);
                     Entity jungle = new Entity(worldMap);
-                    jungle.addProperty(new JungleProperty());
+                    jungle.addProperty(JungleProperty.INSTANCE);
+                    jungle.addToMap(cell);
                 }
                 else {
                     this.nonJungleCells.add(cell);

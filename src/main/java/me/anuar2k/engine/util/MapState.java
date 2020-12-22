@@ -3,21 +3,27 @@ package me.anuar2k.engine.util;
 import javafx.scene.paint.Color;
 
 public class MapState {
+    private transient final int width;
+    private transient final int height;
+    private transient final Color[][] cellColors;
     private final int epochNo;
-    private final Color[][] cellColors;
     private final int animalCount;
     private final byte[] dominantGenome;
     private final double averageEnergy;
     private final double averageLifeLength;
     private final double averageChildrenCount;
 
-    public MapState(int epochNo,
+    public MapState(int width,
+                    int height,
+                    int epochNo,
                     Color[][] cellColors,
                     int animalCount,
                     byte[] dominantGenome,
                     double averageEnergy,
                     double averageLifeLength,
                     double averageChildrenCount) {
+        this.width = width;
+        this.height = height;
         this.epochNo = epochNo;
         this.cellColors = cellColors;
         this.animalCount = animalCount;
@@ -25,6 +31,14 @@ public class MapState {
         this.averageEnergy = averageEnergy;
         this.averageLifeLength = averageLifeLength;
         this.averageChildrenCount = averageChildrenCount;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getWidth() {
+        return this.width;
     }
 
     public int getEpochNo() {
