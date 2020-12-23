@@ -26,4 +26,10 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'me.anuar2k.MainProxy'
+    }
+}
+
 mainClassName = 'me.anuar2k.MainProxy'
