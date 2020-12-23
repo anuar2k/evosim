@@ -15,7 +15,7 @@ public class Main extends Application {
 
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(600);
-        primaryStage.setTitle("JavaFX and Gradle");
+        primaryStage.setTitle("evosim");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

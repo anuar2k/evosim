@@ -8,6 +8,7 @@ public class Config {
     private double startEnergy;
     private double moveEnergy;
     private double plantEnergy;
+    private int startingAnimalCount;
 
     public Config() {
 
@@ -67,5 +68,13 @@ public class Config {
 
     public void setPlantEnergy(double plantEnergy) {
         this.plantEnergy = plantEnergy;
+    }
+
+    public int getStartingAnimalCount() {
+        return this.startingAnimalCount;
+    }
+
+    public void setStartingAnimalCount(int startingAnimalCount) {
+        this.startingAnimalCount = startingAnimalCount;
     }
 }

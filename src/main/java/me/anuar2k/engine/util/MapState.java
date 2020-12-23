@@ -2,11 +2,15 @@ package me.anuar2k.engine.util;
 
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MapState {
     private transient final int width;
     private transient final int height;
     private transient final Color[][] cellColors;
-    private final int epochNo;
+    private transient final int epochNo;
     private final int animalCount;
     private final byte[] dominantGenome;
     private final double averageEnergy;
@@ -67,5 +71,44 @@ public class MapState {
 
     public double getAverageChildrenCount() {
         return this.averageChildrenCount;
+    }
+
+    public static MapState average(List<MapState> mapStates) {
+        Map<ByteArrayWrapper, Integer> genomeCount = new HashMap<>();
+        byte[] topGenome = null;
+        int topGenomeCount = 0;
+
+        int totalAnimalCount = 0;
+        double totalAverageEnergy = 0;
+        double totalAverageLifeLength = 0;
+        double totalAverageChildrenCount = 0;
+
+        for (MapState mapState : mapStates) {
+            totalAnimalCount += mapState.getAnimalCount();
+            totalAverageEnergy += mapState.getAverageEnergy();
+            totalAverageLifeLength += mapState.getAverageLifeLength();
+            totalAverageChildrenCount += mapState.getAverageChildrenCount();
+
+            if (mapState.getDominantGenome() != null) {
+                ByteArrayWrapper wrappedGenome = new ByteArrayWrapper(mapState.getDominantGenome());
+                int currGenomeCount = genomeCount.getOrDefault(wrappedGenome, 0);
+                currGenomeCount++;
+                if (currGenomeCount > topGenomeCount) {
+                    topGenome = wrappedGenome.array;
+                    topGenomeCount = currGenomeCount;
+                }
+                genomeCount.put(wrappedGenome, currGenomeCount);
+            }
+        }
+
+        return new MapState(0,
+                0,
+                0,
+                null,
+                totalAnimalCount / mapStates.size(),
+                topGenome,
+                totalAverageEnergy / mapStates.size(),
+                totalAverageLifeLength / mapStates.size(),
+                totalAverageChildrenCount / mapStates.size());
     }
 }

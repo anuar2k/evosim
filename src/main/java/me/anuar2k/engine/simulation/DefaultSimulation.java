@@ -28,7 +28,8 @@ public class DefaultSimulation implements Simulation {
                              double moveEnergy,
                              double plantEnergy,
                              int jungleWidth,
-                             int jungleHeight) {
+                             int jungleHeight,
+                             int startingAnimalCount) {
         this.worldMap = new SimpleWorldMap(width, height);
         this.randSource = randSource;
         this.worldSystems = new ArrayList<>();
@@ -46,10 +47,12 @@ public class DefaultSimulation implements Simulation {
             worldSystem.init(this.worldMap);
         }
 
-        this.spawnAnimal(new Coord2D(0, 0), startEnergy);
-        this.spawnAnimal(new Coord2D(0, jungleHeight - 1), startEnergy);
-        this.spawnAnimal(new Coord2D(jungleWidth - 1, 0), startEnergy);
-        this.spawnAnimal(new Coord2D(jungleWidth - 1, jungleHeight - 1), startEnergy);
+        for (int i = 0; i < startingAnimalCount; i++) {
+            int x = Math.floorMod(randSource.next(), this.worldMap.getWidth());
+            int y = Math.floorMod(randSource.next(), this.worldMap.getHeight());
+
+            this.spawnAnimal(new Coord2D(x, y), startEnergy);
+        }
     }
 
     public DefaultSimulation(List<WorldSystem> injectedWorldSystems,
@@ -63,7 +66,8 @@ public class DefaultSimulation implements Simulation {
                 config.getMoveEnergy(),
                 config.getPlantEnergy(),
                 config.getJungleWidth(),
-                config.getJungleHeight());
+                config.getJungleHeight(),
+                config.getStartingAnimalCount());
     }
 
     private void spawnAnimal(Coord2D position, double startEnergy) {

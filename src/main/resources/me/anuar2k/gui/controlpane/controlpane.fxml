@@ -3,15 +3,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<fx:root minWidth="400.0" type="javafx.scene.control.TitledPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root minWidth="400.0" prefHeight="313.0" prefWidth="403.0" type="javafx.scene.control.TitledPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane prefWidth="200.0">
          <children>
             <Button fx:id="resume" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Resume" />
-            <Label fx:id="statistics" layoutX="14.0" layoutY="50.0" text="no gathered statistics yet" />
+            <Label fx:id="statistics" alignment="TOP_LEFT" layoutX="14.0" layoutY="93.0" prefHeight="155.0" prefWidth="366.0" text="no epochs run yet" wrapText="true" />
             <Button fx:id="stop" layoutX="91.0" layoutY="14.0" mnemonicParsing="false" text="Stop" />
-            <Button fx:id="remove" layoutX="314.0" layoutY="14.0" mnemonicParsing="false" text="Remove" />
+            <Button fx:id="remove" layoutX="312.0" layoutY="14.0" mnemonicParsing="false" text="Remove" />
+            <Button fx:id="runFor" layoutX="14.0" layoutY="48.0" mnemonicParsing="false" text="Run for" />
+            <TextField fx:id="epochs" layoutX="82.0" layoutY="48.0" prefHeight="28.0" prefWidth="46.0" />
+            <Label layoutX="137.0" layoutY="53.0" text="epochs" />
+            <CheckBox fx:id="gatherStats" layoutX="189.0" layoutY="53.0" mnemonicParsing="false" text="Gather stats until next stop" />
          </children>
       </AnchorPane>
    </content>
