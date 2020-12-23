@@ -25,3 +25,5 @@ javafx {
 test {
     useJUnitPlatform()
 }
+
+mainClassName = 'me.anuar2k.MainProxy'

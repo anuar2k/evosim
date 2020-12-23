@@ -35,14 +35,6 @@ public class ChildrenProperty implements Property {
 
     public int walkDescendants() {
         Set<ChildrenProperty> visited = new HashSet<>();
-        int result = 1;
-
-        for (ChildrenProperty child : this.children) {
-            if (!visited.contains(child)) {
-                result += child.walk(visited);
-            }
-        }
-
-        return result;
+        return this.walk(visited);
     }
 }
